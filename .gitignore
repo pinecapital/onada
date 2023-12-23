@@ -32,3 +32,4 @@ __init__.py
 config.json
 note.ipynb
 config.ini
+server.log
