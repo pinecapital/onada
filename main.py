@@ -15,6 +15,7 @@ log_file = 'server.log'
 file_handler = RotatingFileHandler(log_file, maxBytes=1024 * 1024 * 100, backupCount=10)
 file_handler.setFormatter(log_formatter)
 file_handler.setLevel(logging.INFO)
+app.logger.setLevel(logging.INFO)
 
 app.logger.addHandler(file_handler)
 
@@ -33,6 +34,8 @@ api = API(access_token=access_token)
 
 @app.route('/webhook', methods=['POST'])
 def trade():
+    app.logger.info("Webhook hit with a request")  # Log at the start of the function
+
     try:
         request_data = request.get_json()
         app.logger.info(f"Received request data: {request_data}")
@@ -101,7 +104,7 @@ def trade():
 
         return jsonify({"status": "success"})
     except Exception as e:
-        app.logger.error(f"An error occurred: {e}")
+        app.logger.error(f"An error occurred: {e}",exe_info=True)
         return jsonify({"status": "error", "message": str(e)}), 500
 
 
